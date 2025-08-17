@@ -23,35 +23,17 @@
       box-shadow: 0 0 20px rgba(0,255,200,0.5);
       display: block;
     }
-    #unmuteBtn {
-      margin-top: 15px;
-      padding: 12px 24px;
-      border: none;
-      border-radius: 8px;
-      background: #00ffcc;
-      color: #111;
-      font-weight: bold;
-      font-size: 16px;
-      cursor: pointer;
-      display: none;
-    }
   </style>
 </head>
 <body>
   <h1>AO VIVO</h1>
 
   <!-- Player -->
-  <video id="video" autoplay muted playsinline controls></video>
-  <button id="unmuteBtn">🔊 Tocar com Áudio</button>
+  <video id="video" autoplay playsinline controls></video>
 
   <script>
     var streamURL = "https://dfr80qz435crc.cloudfront.net/MNOP/Amagi/Caze/Caze_TV_BR/1080p-vtt/index.m3u8";
-
     var video = document.getElementById("video");
-    var unmuteBtn = document.getElementById("unmuteBtn");
-
-    // Detecta se é mobile
-    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
     if (Hls.isSupported()) {
       var hls = new Hls();
@@ -61,25 +43,11 @@
       video.src = streamURL;
     }
 
-    // Tenta iniciar com som
+    // Força iniciar com áudio (só funciona no desktop sem bloqueio)
     video.muted = false;
+    video.volume = 1.0;
     video.play().catch(() => {
-      // Se bloqueado, volta pro mudo
-      video.muted = true;
-      video.play();
-
-      // Se for celular, mostra o botão para liberar áudio
-      if (isMobile) {
-        unmuteBtn.style.display = "inline-block";
-      }
-    });
-
-    // Clique ativa áudio
-    unmuteBtn.addEventListener("click", () => {
-      video.muted = false;
-      video.volume = 1.0;
-      video.play();
-      unmuteBtn.style.display = "none";
+      console.log("No celular é preciso tocar no vídeo para liberar o áudio.");
     });
   </script>
 </body>
