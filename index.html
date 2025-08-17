@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>DUO STREAM - Player</title>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 { color: #00ffcc; }
+    video {
+      width: 90%;
+      max-width: 800px;
+      margin: 20px auto;
+      border: 3px solid #00ffcc;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,255,200,0.5);
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <h1>AO VIVO</h1>
+
+  <!-- Player -->
+  <video id="video" controls autoplay muted playsinline></video>
+
+  <script>
+    // 🔹 Link de stream HLS
+    var streamURL = "https://dfr80qz435crc.cloudfront.net/MNOP/Amagi/Caze/Caze_TV_BR/1080p-vtt/index.m3u8";
+
+    var video = document.getElementById("video");
+    if (Hls.isSupported()) {
+      var hls = new Hls();
+      hls.loadSource(streamURL);
+      hls.attachMedia(video);
+    } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+      video.src = streamURL;
+    }
+
+    // Tentar remover mute automaticamente (alguns navegadores bloqueiam som)
+    video.muted = false;
+    video.play().catch(() => {
+      console.log("Navegador bloqueou autoplay com som. Clique no player para ativar o áudio.");
+    });
+  </script>
+</body>
+</html>
